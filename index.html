@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/body-layout.css">
+    <link rel="stylesheet" href="css/header-layout.css">
+    <title>Meme Generator!</title>
+</head>
+
+<body onload="onInitGallery();onInitMeme()" class="body-layout">
+
+    <header class="header-container">
+        <nav class="main-nav-container">
+            <ul class="main-nav">
+                <li><a href="" onclick="renderGallery();onInitEditor()">Flexible</a></li>
+                <li><a href="">Gallery</a></li>
+                <li><a href="">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-container">
+
+        <section class="img-gallery">
+            <h1>Choose an image</h1>
+            <div class="images-container"> </div>
+        </section>
+
+        <section class="meme-editor hidden">
+
+            <canvas class="main-canvas"> </canvas>
+
+            <div class="features-container">
+                <div class="lines-container">
+
+                    <input class="text-input" type="text" placeholder="Write Something funny..."
+                        oninput="onAddText(this.value)">
+                    <input type="color" oninput="onSetTextColor(this.value)" value="#ffffff">
+                    <input type="color" oninput="onSetStrokeColor(this.value)" value="#000000">
+                    <button onclick="onSetFontBigger(true)">A+</button>
+                    <button onclick="onSetFontBigger(false)">A-</button>
+                    <button onclick="onDeleteLine()"><i class="fa-solid fa-trash-can"></i></button>
+                    <button onclick="onRowUp(false)" title="Get next line"><i class="fa-solid fa-arrow-down"></i></i></button>
+                    <button onclick="onRowUp(true)" title="Get prev line"><i class="fa-solid fa-arrow-up"></i></button>
+
+                </div>
+
+                <button onclick="onAddLine()" title="New line"><i class="fa-solid fa-plus"></i></button>
+
+                <button><a href="#" class="download-btn" onclick="downloadImg(this)" download="my-img.jpg">Download</a></button>
+                <button class="btn" onclick="onUploadImg()">Share on Facebook</button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer></footer>
+
+    <script src="https://kit.fontawesome.com/09e52b698b.js" crossorigin="anonymous"></script>
+    <script src="js/service/util.service.js"></script>
+    <script src="js/service/meme.service.js"></script>
+    <script src="js/gallery.controller.js"></script>
+    <script src="js/meme.controller.js"></script>
+</body>
+
+</html>

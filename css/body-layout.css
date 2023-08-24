@@ -1,0 +1,12 @@
+.body-layout {
+    display: grid;
+    grid-template-columns: 1fr 600px 1fr;
+}
+
+.body-layout>* {
+    grid-column: 2 / 3;
+}
+
+.body-layout header {
+    grid-column: 1 / -1;
+}

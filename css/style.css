@@ -1,0 +1,22 @@
+img{
+    width: 120px;
+    height: 120px;
+    object-fit: cover; object-position: 100% 0;
+    cursor: pointer;
+}
+
+.hidden{
+    display: none;
+}
+
+.meme-editor{
+    width: 400px;
+    height: 500px;
+    /* overflow:hidden; */
+    /* width: minmax(80px , 300px); */
+    /* height: fit-content; */
+}
+
+body{
+    /* cursor: grab; */
+}
