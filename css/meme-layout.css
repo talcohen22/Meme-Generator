@@ -1,0 +1,48 @@
+.meme-editor{
+    margin-top: 20px;
+    /* width: 100px; */
+    justify-self: center;
+}
+
+.meme-editor-layout{
+    display: grid;
+    grid-auto-flow: column;
+    place-items: center;
+    gap: 20px;
+}
+
+.features-container{
+    display: flex;
+    background-color: rgb(245, 244, 239);
+    flex-wrap: wrap;
+}
+
+.features-container input, .features-container button{
+    background-color: white;
+    font-size: 15px;
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 10px;
+    height: 40px;
+}
+
+.features-container button{
+    padding: 10px;
+    width: 40px;
+}
+
+.features-container input:not:first-child{
+    width: 40px;
+}
+
+
+.text-input{
+    width: 230px;
+}
+
+.features-container *{
+    cursor: pointer;
+}
+
+.features-container button a{
+    color: black;
+}

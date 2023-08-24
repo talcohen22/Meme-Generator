@@ -1,17 +1,27 @@
-.header-container{
-    background-color: rgb(255, 250, 181);
+.header-container {
+    display: grid;
+    grid-template-columns: 1fr var(--main-width) 1fr;
+    background: var(--orange1);
 }
 
-.header-container .main-nav li{
+.header-container .main-nav-container {
+    grid-column: 2/3;
+}
+
+.header-container .main-nav li {
     list-style-type: none;
+    
 }
 
-.header-container .main-nav-container ul{
+.header-container .main-nav-container ul {
     display: flex;
-    gap:10px; /**************************************************/
+    padding: 0;
+    gap: 25px;
+    align-items: center;
 }
 
-.header-container .main-nav-container a{
+.header-container .main-nav-container a {
     color: black;
     text-decoration: none;
+    
 }

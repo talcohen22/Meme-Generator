@@ -4,10 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/vars.css">
+    <link rel="stylesheet" href="css/fonts.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/body-layout.css">
     <link rel="stylesheet" href="css/header-layout.css">
-    <title>Meme Generator!</title>
+    <link rel="stylesheet" href="css/gallery-layout.css">
+    <link rel="stylesheet" href="css/meme-layout.css">
+    <link rel="stylesheet" href="css/footer-layout.css">
+    <title>Meme Generator</title>
 </head>
 
 <body onload="onInitGallery();onInitMeme()" class="body-layout">
@@ -15,6 +20,7 @@
     <header class="header-container">
         <nav class="main-nav-container">
             <ul class="main-nav">
+                <li class="logo"><a href="">MyMemeGen</a></li>
                 <li><a href="" onclick="renderGallery();onInitEditor()">Flexible</a></li>
                 <li><a href="">Gallery</a></li>
                 <li><a href="">About</a></li>
@@ -30,36 +36,38 @@
         </section>
 
         <section class="meme-editor hidden">
+            <div class="meme-editor-layout">
+                <canvas class="main-canvas"> </canvas>
 
-            <canvas class="main-canvas"> </canvas>
-
-            <div class="features-container">
-                <div class="lines-container">
-
-                    <input class="text-input" type="text" placeholder="Write Something funny..."
-                        oninput="onAddText(this.value)">
-                    <input type="color" oninput="onSetTextColor(this.value)" value="#ffffff">
-                    <input type="color" oninput="onSetStrokeColor(this.value)" value="#000000">
-                    <button onclick="onSetFontBigger(true)">A+</button>
-                    <button onclick="onSetFontBigger(false)">A-</button>
+                <div class="features-container">
+                    <input class="text-input" type="text" placeholder="Write Something funny..." oninput="onAddText(this.value)"><br>
+                    <button onclick="onAddLine()" title="New line"><i class="fa-solid fa-plus"></i></button>
                     <button onclick="onDeleteLine()"><i class="fa-solid fa-trash-can"></i></button>
                     <button onclick="onRowUp(false)" title="Get next line"><i class="fa-solid fa-arrow-down"></i></i></button>
-                    <button onclick="onRowUp(true)" title="Get prev line"><i class="fa-solid fa-arrow-up"></i></button>
-
+                    <button onclick="onRowUp(true)" title="Get prev line"><i class="fa-solid fa-arrow-up"></i></button><br>
+                    <button onclick="onSetFontBigger(true)">A+</button>
+                    <button onclick="onSetFontBigger(false)">A-</button><br>
+                    <input type="color" oninput="onSetTextColor(this.value)" value="#ffffff">
+                    <input type="color" oninput="onSetStrokeColor(this.value)" value="#000000">
+                    <button title="Download"><a href="#" class="download-btn" onclick="downloadImg(this)" download="my-img.jpg"><i class="fa-solid fa-download"></i></a></button>
+                    <button class="btn" onclick="onUploadImg()" title="Share on Facebook"><i class="fa-brands fa-facebook-f"></i></button>
                 </div>
-
-                <button onclick="onAddLine()" title="New line"><i class="fa-solid fa-plus"></i></button>
-
-                <button><a href="#" class="download-btn" onclick="downloadImg(this)" download="my-img.jpg">Download</a></button>
-                <button class="btn" onclick="onUploadImg()">Share on Facebook</button>
-
             </div>
 
         </section>
 
     </main>
 
-    <footer></footer>
+    <footer class="footer-container">
+        <h1>MyMemeGen</h1>
+        <small>All rights reserved ©️Tal Cohen 2023</small>
+        <ul class="social-links flex">
+            <li class="facebook flex"><i class="fa-brands fa-facebook-f"></i></li>
+            <li class="twitter flex"><i class="fa-brands fa-twitter"></i></li>
+            <li class="be flex"><i class="fa-brands fa-square-behance"></i></li>
+            <li class="internet flex"><i class="fa-solid fa-globe"></i></li>
+        </ul>
+    </footer>
 
     <script src="https://kit.fontawesome.com/09e52b698b.js" crossorigin="anonymous"></script>
     <script src="js/service/util.service.js"></script>

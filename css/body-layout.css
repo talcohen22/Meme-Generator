@@ -1,6 +1,6 @@
 .body-layout {
     display: grid;
-    grid-template-columns: 1fr 600px 1fr;
+    grid-template-columns: 1fr var(--main-width) 1fr;
 }
 
 .body-layout>* {
@@ -8,5 +8,9 @@
 }
 
 .body-layout header {
+    grid-column: 1 / -1;
+}
+
+.body-layout footer {
     grid-column: 1 / -1;
 }

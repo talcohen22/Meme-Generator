@@ -1,0 +1,5 @@
+:root{
+    --main-width: 80vw;
+
+    --orange1: linear-gradient(90deg, rgba(255,192,0,1) 0%, rgba(255,230,155,1) 53%, rgba(255,230,155,1) 64%, rgba(255,192,0,1) 100%);
+}
