@@ -23,5 +23,9 @@
 .header-container .main-nav-container a {
     color: black;
     text-decoration: none;
-    
+    transition: font-size 0.3s;
+}
+
+.header-container li:not(:first-child):hover{
+    font-weight: bold;
 }

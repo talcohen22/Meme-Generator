@@ -1,20 +1,23 @@
 .meme-editor{
-    margin-top: 20px;
-    /* width: 100px; */
-    justify-self: center;
+    display: flex;
+    gap: 20px;
 }
 
 .meme-editor-layout{
-    display: grid;
-    grid-auto-flow: column;
-    place-items: center;
-    gap: 20px;
+    /* width: 600px;
+    height: 600px; */
 }
 
 .features-container{
     display: flex;
-    background-color: rgb(245, 244, 239);
-    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.features-container *{
+    display: flex;
+    cursor: pointer;
 }
 
 .features-container input, .features-container button{
@@ -34,13 +37,8 @@
     width: 40px;
 }
 
-
 .text-input{
     width: 230px;
-}
-
-.features-container *{
-    cursor: pointer;
 }
 
 .features-container button a{

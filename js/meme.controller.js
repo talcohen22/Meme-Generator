@@ -90,7 +90,7 @@ function addTextLine(txt, fontSize = 45, x, y, color = "white", strokeColor = "b
 }
 
 function resizeCanvas(elImg) {
-    const elContainer = getEl('.meme-editor')
+    const elContainer = getEl('.meme-editor-layout')
     gElCanvas.width = elContainer.offsetWidth
     const IH = elImg.height
     const IW = elImg.width

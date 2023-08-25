@@ -6,11 +6,6 @@
     display: none;
 }
 
-.meme-editor {
-    width: 500px;
-    height: 500px;
-}
-
 body {
     /* cursor: grab; */
 }
@@ -24,4 +19,5 @@ body {
     display: grid;
     justify-content: center;
     background-color: rgb(245, 244, 239);
+    box-shadow: inset 0px 0px 6px 5px rgb(255 255 255);
 }

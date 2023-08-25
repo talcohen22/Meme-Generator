@@ -38,21 +38,27 @@
         <section class="meme-editor hidden">
             <div class="meme-editor-layout">
                 <canvas class="main-canvas"> </canvas>
-
-                <div class="features-container">
-                    <input class="text-input" type="text" placeholder="Write Something funny..." oninput="onAddText(this.value)"><br>
+            </div>
+            <div class="features-container">
+                <input class="text-input" type="text" placeholder="Write Something funny..." oninput="onAddText(this.value)">
+                <div class="features1">
                     <button onclick="onAddLine()" title="New line"><i class="fa-solid fa-plus"></i></button>
                     <button onclick="onDeleteLine()"><i class="fa-solid fa-trash-can"></i></button>
                     <button onclick="onRowUp(false)" title="Get next line"><i class="fa-solid fa-arrow-down"></i></i></button>
-                    <button onclick="onRowUp(true)" title="Get prev line"><i class="fa-solid fa-arrow-up"></i></button><br>
+                    <button onclick="onRowUp(true)" title="Get prev line"><i class="fa-solid fa-arrow-up"></i></button>
+                </div>
+                <div class-="features2">
                     <button onclick="onSetFontBigger(true)">A+</button>
-                    <button onclick="onSetFontBigger(false)">A-</button><br>
+                    <button onclick="onSetFontBigger(false)">A-</button>
                     <input type="color" oninput="onSetTextColor(this.value)" value="#ffffff">
                     <input type="color" oninput="onSetStrokeColor(this.value)" value="#000000">
+                </div>
+                <div class="features3">
                     <button title="Download"><a href="#" class="download-btn" onclick="downloadImg(this)" download="my-img.jpg"><i class="fa-solid fa-download"></i></a></button>
                     <button class="btn" onclick="onUploadImg()" title="Share on Facebook"><i class="fa-brands fa-facebook-f"></i></button>
                 </div>
             </div>
+            
 
         </section>
 
