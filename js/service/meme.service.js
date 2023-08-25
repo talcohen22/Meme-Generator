@@ -62,7 +62,7 @@ function createLine(x, y) { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
         color: 'white',
         strokeColor: 'black',
         width: 0,
-        fontSize:45,
+        fontSize: 45,
         x,
         y,
         leftTop: {},
@@ -94,7 +94,7 @@ function isTxtExist(txt) {
 
 
 function setLine(txt, x, y) {
-    let line = gMeme.lines[gMeme.selectedLineIdx]
+    let line = getSelectedLine()
     line.txt = txt
     line.x = x
     line.y = y
@@ -116,7 +116,7 @@ function isTextClicked(pos) {
 }
 
 function moveText(dx, dy) { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-    let line = gMeme.lines[gMeme.selectedLineIdx]
+    let line = getSelectedLine()
     line.x += dx
     line.y += dy
 
@@ -124,24 +124,37 @@ function moveText(dx, dy) { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 }
 
 function setTextColor(color) { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-    gMeme.lines[gMeme.selectedLineIdx].color = color
+    getSelectedLine().color = color
 }
 
 function setStrokeColor(color) { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-    gMeme.lines[gMeme.selectedLineIdx].strokeColor = color
+    getSelectedLine().strokeColor = color
 }
 
 function setFontBigger(deltaPx) { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-    gMeme.lines[gMeme.selectedLineIdx].fontSize += deltaPx
+    getSelectedLine().fontSize += deltaPx
 }
 
-function deleteLine(){ ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-    gMeme.lines.splice(gMeme.selectedLineIdx,1)
-    if (gMeme.selectedLineIdx > 0 ) gMeme.selectedLineIdx--
-    else if (gMeme.selectedLineIdx + 1 <  gMeme.lines.length) gMeme.selectedLineIdx--
-    if(gMeme.lines.length === 0) createLine(0,0)
+function deleteLine() { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+    gMeme.lines.splice(gMeme.selectedLineIdx, 1)
+    if (gMeme.selectedLineIdx > 0) gMeme.selectedLineIdx--
+    else if (gMeme.selectedLineIdx < gMeme.lines.length - 1) gMeme.selectedLineIdx++
+    if (gMeme.lines.length === 0) createLine(0, 0)
 }
 
 function setSelectedIdx(currLine) { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
     gMeme.selectedLineIdx = currLine
+}
+
+function isLineExist() { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+    if (!getSelectedLine().txt) return false
+    return true
+}
+
+function getSelectedLine() { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+    return gMeme.lines[gMeme.selectedLineIdx]
+}
+
+function getSelectedLineIdx(){
+    return gMeme.selectedLineIdx
 }

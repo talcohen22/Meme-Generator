@@ -55,14 +55,20 @@ function onAddText(txt) {
     
     renderExistTexts()
 
-    const { x, y } = getTxtLocation()
-
-    addTextLine(txt, undefined, x, y) //change the text
-    setLine(txt, x, y)
+    if(isLineExist()){
+        var currLine = getSelectedLine()
+        addTextLine(txt, currLine.fontSize, currLine.x ,currLine.y , currLine.color, currLine.strokeColor)
+        setLine(txt, currLine.x, currLine.y)
+    }
+    else{
+        var { x, y } = getTxtLocation()
+        addTextLine(txt, undefined, x, y) //change the text
+        setLine(txt, x, y)
+    } 
 }
 
 function getTxtLocation() {
-    const lineIdx = getMeme().selectedLineIdx
+    const lineIdx = getSelectedLineIdx()
 
     const x = gElCanvas.width / 2
     let y
@@ -75,7 +81,7 @@ function getTxtLocation() {
 
 function renderExistTexts() { //render all texts that already enter
     getMeme().lines.forEach((line, idx) => {
-        if (getMeme().selectedLineIdx !== idx) addTextLine(line.txt, line.fontSize, line.x, line.y, line.color, line.strokeColor)
+        if (getSelectedLineIdx() !== idx) addTextLine(line.txt, line.fontSize, line.x, line.y, line.color, line.strokeColor)
     })
 }
 
@@ -100,7 +106,7 @@ function resizeCanvas(elImg) {
 
 function onDown(ev) { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
     const pos = getEvPos(ev)
-    gCurrLineIdx = getMeme().selectedLineIdx
+    gCurrLineIdx = getSelectedLineIdx()
 
     if (!isTextClicked(pos)) return
     setTextDrag(true)
@@ -130,7 +136,7 @@ function setTextDrag(isDrag) { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 function onUp() { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
     setTextDrag(false)
     document.body.style.cursor = 'grab'
-    getMeme().selectedLineIdx = gCurrLineIdx
+    getSelectedLineIdx() = gCurrLineIdx
 }
 
 function onMove(ev) { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
@@ -181,7 +187,7 @@ function onSetFontBigger(isBigger) { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
 function onDeleteLine() { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
     deleteLine()
-    getEl('.text-input').value = getMeme().lines[getMeme().selectedLineIdx].txt
+    getEl('.text-input').value = getSelectedLine().txt
     renderMeme()
 }
 
@@ -220,10 +226,10 @@ function onAddLine() { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 }
 
 function onRowUp(isUp) { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-    var currLine = getMeme().selectedLineIdx
+    var currLine = getSelectedLineIdx()
     if (isUp && currLine - 1 < 0 || !isUp && currLine + 1 > getMeme().lines.length - 1) return
     if (isUp) setSelectedIdx(currLine - 1)
     if (!isUp) setSelectedIdx(currLine + 1)
 
-    getEl('.text-input').value = getMeme().lines[getMeme().selectedLineIdx].txt
+    getEl('.text-input').value = getSelectedLine().txt
 }
