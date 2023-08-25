@@ -31,20 +31,7 @@ let gImg = [
 let gMeme = {
     selectedImg: '',
     selectedLineIdx: 0,
-    lines:
-        [
-            // {
-            //     txt: 'yyyyyy',
-            //     size: 0,
-            //     color: 'white',
-            //     width: 0,
-            //     fontSize: null,
-            //     x: null,
-            //     y: null,
-            //     leftTop: {},
-            //     rightBottom: {}
-            // }
-        ]
+    lines: []
 }
 
 let gKeywordSearchCountMap = { 'funny': 12, 'cat': 16, 'baby': 2 }
@@ -55,7 +42,7 @@ function _createLines() {
     gMeme.lines = [createLine('', 0)]
 }
 
-function createLine(x, y) { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+function createLine(x, y) {
     const line = {
         txt: '',
         size: 0,
@@ -85,12 +72,12 @@ function setMemeImg(img) {
     gMeme.selectedImg = img
 }
 
-function isTxtExist(txt) {
-    gMeme.lines.forEach(line => {
-        if (gMeme.lines[0].txt === txt.substring(0, txt.length - 1)) return true
-    })
-    return false
-}
+// function isTxtExist(txt) {
+//     gMeme.lines.forEach(line => {
+//         if (gMeme.lines[0].txt === txt.substring(0, txt.length - 1)) return true
+//     })
+//     return false
+// }
 
 
 function setLine(txt, x, y) {
@@ -105,7 +92,7 @@ function setLine(txt, x, y) {
 
 function isTextClicked(pos) {
     let ans = false
-    gMeme.lines.forEach((line, idx) => {
+    gMeme.lines.forEach((line, idx) => { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
         if (pos.x <= line.rightBottom.x && pos.x >= line.leftTop.x && pos.y <= line.rightBottom.y && pos.y >= line.leftTop.y) {
             ans = true
             gMeme.selectedLineIdx = idx
@@ -115,7 +102,7 @@ function isTextClicked(pos) {
     return ans
 }
 
-function moveText(dx, dy) { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+function moveText(dx, dy) {
     let line = getSelectedLine()
     line.x += dx
     line.y += dy
@@ -123,38 +110,38 @@ function moveText(dx, dy) { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
     setLine(line.txt, line.x, line.y)
 }
 
-function setTextColor(color) { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+function setTextColor(color) {
     getSelectedLine().color = color
 }
 
-function setStrokeColor(color) { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+function setStrokeColor(color) {
     getSelectedLine().strokeColor = color
 }
 
-function setFontBigger(deltaPx) { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+function setFontBigger(deltaPx) {
     getSelectedLine().fontSize += deltaPx
 }
 
-function deleteLine() { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+function deleteLine() {
     gMeme.lines.splice(gMeme.selectedLineIdx, 1)
     if (gMeme.selectedLineIdx > 0) gMeme.selectedLineIdx--
     else if (gMeme.selectedLineIdx < gMeme.lines.length - 1) gMeme.selectedLineIdx++
     if (gMeme.lines.length === 0) createLine(0, 0)
 }
 
-function setSelectedIdx(currLine) { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+function setSelectedIdx(currLine) {
     gMeme.selectedLineIdx = currLine
 }
 
-function isLineExist() { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+function isLineExist() {
     if (!getSelectedLine().txt) return false
     return true
 }
 
-function getSelectedLine() { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+function getSelectedLine() {
     return gMeme.lines[gMeme.selectedLineIdx]
 }
 
-function getSelectedLineIdx(){
+function getSelectedLineIdx() {
     return gMeme.selectedLineIdx
 }

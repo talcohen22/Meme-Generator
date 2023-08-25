@@ -32,12 +32,11 @@ function renderImg(elImg) {
 }
 
 function renderMeme() {
-    const meme = getMeme()
-    const selectedLine = meme.lines[meme.selectedLineIdx]
-    const elImg = meme.selectedImg
+    const selectedLine = getSelectedLine()
+    const elImg = getMeme().selectedImg
     renderImg(elImg)
     renderExistTexts()
-    addTextLine(selectedLine.txt , selectedLine.fontSize, selectedLine.x, selectedLine.y , selectedLine.color, selectedLine.strokeColor)
+    addTextLine(selectedLine.txt, selectedLine.fontSize, selectedLine.x, selectedLine.y, selectedLine.color, selectedLine.strokeColor)
 }
 
 function hideGallery() {
@@ -45,6 +44,7 @@ function hideGallery() {
 }
 
 function showEditor() {
+    addClass('flex', '.meme-editor')
     removeClass('hidden', '.meme-editor')
 }
 
@@ -52,19 +52,19 @@ function onAddText(txt) {
 
     gCtx.clearRect(0, 0, gElCanvas.width, gElCanvas.height)
     gCtx.drawImage(getMeme().selectedImg, 0, 0, gElCanvas.width, gElCanvas.height)
-    
+
     renderExistTexts()
 
-    if(isLineExist()){
+    if (isLineExist()) {
         var currLine = getSelectedLine()
-        addTextLine(txt, currLine.fontSize, currLine.x ,currLine.y , currLine.color, currLine.strokeColor)
+        addTextLine(txt, currLine.fontSize, currLine.x, currLine.y, currLine.color, currLine.strokeColor)
         setLine(txt, currLine.x, currLine.y)
     }
-    else{
+    else {
         var { x, y } = getTxtLocation()
         addTextLine(txt, undefined, x, y) //change the text
         setLine(txt, x, y)
-    } 
+    }
 }
 
 function getTxtLocation() {
@@ -75,7 +75,7 @@ function getTxtLocation() {
     if (lineIdx === 0) y = 45 //initial font size = 45
     else if (lineIdx === 1) y = gElCanvas.height - 15
     else y = gElCanvas.width / 2
-    
+
     return { x, y }
 }
 
@@ -104,7 +104,7 @@ function resizeCanvas(elImg) {
     gElCanvas.height = IH * CW / IW //CH 
 }
 
-function onDown(ev) { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+function onDown(ev) {
     const pos = getEvPos(ev)
     gCurrLineIdx = getSelectedLineIdx()
 
@@ -115,7 +115,7 @@ function onDown(ev) { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
     document.body.style.cursor = 'grabbing'
 }
 
-function getEvPos(ev) { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+function getEvPos(ev) {
     let pos = { x: ev.offsetX, y: ev.offsetY }
 
     if (TOUCH_EVS.includes(ev.type)) {
@@ -129,25 +129,26 @@ function getEvPos(ev) { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
     return pos
 }
 
-function setTextDrag(isDrag) { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+function setTextDrag(isDrag) {
     gIsDrag = isDrag
 }
 
-function onUp() { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+function onUp() {
     setTextDrag(false)
     document.body.style.cursor = 'grab'
-    getSelectedLineIdx() = gCurrLineIdx
+    gCurrLineIdx = getSelectedLineIdx()
 }
 
-function onMove(ev) { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-    if (!gIsDrag) return
+function onMove(ev) {
+
     const pos = getEvPos(ev)
     if (isTextClicked(pos) && !gIsDrag) {
         document.body.style.cursor = 'grab'
         // onSetSquareAround()
     }
-    
+    else if (isTextClicked(pos) && gIsDrag) document.body.style.cursor = 'grabbing'
     else document.body.style.cursor = 'default'
+    if (!gIsDrag) return
 
     const dx = pos.x - gStartPos.x
     const dy = pos.y - gStartPos.y
@@ -155,40 +156,55 @@ function onMove(ev) { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
     moveText(dx, dy)
     renderMeme()
     gStartPos = pos
-} 
-
-function onSetSquareAround() {
-    let line = getMeme().lines[gMeme.selectedLineIdx]
-    gCtx.beginPath();
-    gCtx.rect(line.leftTop.x, line.leftTop.y, line.width, line.fontSize);
-    gCtx.stroke();
 }
+
+// function onSetSquareAround() {
+//     let line = getSelectedLine()
+//     gCtx.beginPath();
+//     gCtx.rect(line.leftTop.x, line.leftTop.y, line.width, line.fontSize);
+//     gCtx.stroke();
+// }
 
 function downloadImg(elLink) {
     const imgContent = gElCanvas.toDataURL('image/jpeg') // image/jpeg the default format
     elLink.href = imgContent
 }
 
-function onSetTextColor(color) { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+function onSetTextColor(color) {
     setTextColor(color)
     renderMeme()
 }
 
-function onSetStrokeColor(color) { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+function onSetStrokeColor(color) {
     setStrokeColor(color)
     renderMeme()
 }
 
-function onSetFontBigger(isBigger) { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+function onSetFontBigger(isBigger) {
     const deltaPx = isBigger ? 2 : -2
     setFontBigger(deltaPx)
     renderMeme()
 }
 
-function onDeleteLine() { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+function onDeleteLine() {
     deleteLine()
     getEl('.text-input').value = getSelectedLine().txt
     renderMeme()
+}
+
+function onAddLine() {
+    createLine('', 0)
+    setSelectedIdx(getMeme().lines.length - 1)
+    getEl('.text-input').value = ''
+}
+
+function onRowUp(isUp) {
+    var currLine = getSelectedLineIdx()
+    if (isUp && currLine - 1 < 0 || !isUp && currLine + 1 > getMeme().lines.length - 1) return
+    if (isUp) setSelectedIdx(currLine - 1)
+    if (!isUp) setSelectedIdx(currLine + 1)
+
+    getEl('.text-input').value = getSelectedLine().txt
 }
 
 function onUploadImg() {
@@ -217,19 +233,4 @@ function doUploadImg(imgDataUrl, onSuccess) {
     }
     XHR.open('POST', '//ca-upload.com/here/upload.php')
     XHR.send(formData)
-}
-
-function onAddLine() { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-    createLine('', 0)
-    setSelectedIdx(getMeme().lines.length - 1)
-    getEl('.text-input').value = ''
-}
-
-function onRowUp(isUp) { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-    var currLine = getSelectedLineIdx()
-    if (isUp && currLine - 1 < 0 || !isUp && currLine + 1 > getMeme().lines.length - 1) return
-    if (isUp) setSelectedIdx(currLine - 1)
-    if (!isUp) setSelectedIdx(currLine + 1)
-
-    getEl('.text-input').value = getSelectedLine().txt
 }

@@ -2,3 +2,8 @@
     font-family: 'Montserrat';
     src: url("/fonts/montserrat/Montserrat-Regular.ttf");
 }
+
+@font-face{
+    font-family: 'eurof';
+    src: url("/fonts/euro/eurof.ttf");
+}

@@ -10,7 +10,6 @@
 
 .header-container .main-nav li {
     list-style-type: none;
-    
 }
 
 .header-container .main-nav-container ul {
@@ -24,8 +23,15 @@
     color: black;
     text-decoration: none;
     transition: font-size 0.3s;
+    padding: 5px;
 }
 
 .header-container li:not(:first-child):hover{
     font-weight: bold;
+}
+
+.logo{
+    font-size: 27px;
+    font-weight: bold;
+    font-family: 'eurof';
 }
