@@ -55,7 +55,7 @@ function createLine(x, y) {
         strokeColor: '#000000',
         width: 0,
         fontSize: 45,
-        fontType: 'Comic Sans MS',
+        fontType: 'Impact',
         x,
         y,
         leftTop: {},

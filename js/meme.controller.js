@@ -85,7 +85,7 @@ function renderExistTexts() { //render all texts that already enter
     })
 }
 
-function addTextLine(txt, fontSize = 45, fontType = 'Comic Sans MS', x, y, color = "white", strokeColor = "black") {
+function addTextLine(txt, fontSize = 45, fontType = 'Impact', x, y, color = "white", strokeColor = "black") {
     gCtx.font = fontSize + 'px ' + fontType; ///Impact font family
     gCtx.fillStyle = color
     gCtx.textAlign = "center"
@@ -140,6 +140,7 @@ function onUp() {
     setTextDrag(false)
     document.body.style.cursor = 'grab'
     gCurrLineIdx = getSelectedLineIdx()
+    renderMeme()
 }
 
 function onMove(ev) {
