@@ -24,6 +24,7 @@
     text-decoration: none;
     transition: font-size 0.3s;
     padding: 5px;
+    cursor: pointer;
 }
 
 .header-container li:not(:first-child):hover{

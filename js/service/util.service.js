@@ -47,10 +47,6 @@ function removeClass(className, selector) {
     document.querySelector(`.${selector}`).classList.remove(className)
 }
 
-// function addClass(className, selector) {
-//     document.querySelector(`.${selector}`).classList.add(className)
-// }
-
 function setElText(selector, txt) {
     const el = document.querySelector(`.${selector}`)
     el.innerText = txt

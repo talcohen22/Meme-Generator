@@ -13,19 +13,32 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 10px;
 }
 
 .features-container *{
     display: flex;
+    gap: 3px;
     cursor: pointer;
 }
 
-.features-container input, .features-container button{
+.features-container input, .features-container button, .features-container select{
     background-color: white;
     font-size: 15px;
     border: 1px solid rgb(204, 204, 204);
     border-radius: 10px;
     height: 40px;
+}
+
+.features-container select{
+    font-weight: bold;
+    font-family: 'cursive';
+    font-size: 20px;
+    width: 60px;
+}
+
+.features-container select option{
+    font-size: 15px;
 }
 
 .features-container button{

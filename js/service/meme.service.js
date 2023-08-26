@@ -1,6 +1,11 @@
 'use strict'
 
+const STORAGE_URL_KEY = 'urlDB'
+const STORAGE_MEME_KEY = 'memesDB'
+
+let gStorageMemes = []
 let gCountId = 1
+let gOnDownLineIdx
 
 let gImg = [
     { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
@@ -46,10 +51,11 @@ function createLine(x, y) {
     const line = {
         txt: '',
         size: 0,
-        color: 'white',
-        strokeColor: 'black',
+        color: '#ffffff',
+        strokeColor: '#000000',
         width: 0,
         fontSize: 45,
+        fontType: 'Comic Sans MS',
         x,
         y,
         leftTop: {},
@@ -58,7 +64,6 @@ function createLine(x, y) {
     gMeme.lines.push(line)
     return line
 }
-
 
 function getImages() {
     return gImg
@@ -79,7 +84,6 @@ function setMemeImg(img) {
 //     return false
 // }
 
-
 function setLine(txt, x, y) {
     let line = getSelectedLine()
     line.txt = txt
@@ -92,11 +96,10 @@ function setLine(txt, x, y) {
 
 function isTextClicked(pos) {
     let ans = false
-    gMeme.lines.forEach((line, idx) => { ////vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+    gMeme.lines.forEach((line, idx) => {
         if (pos.x <= line.rightBottom.x && pos.x >= line.leftTop.x && pos.y <= line.rightBottom.y && pos.y >= line.leftTop.y) {
             ans = true
-            gMeme.selectedLineIdx = idx
-            // gMeme.selectedLineIdx = idx
+            gOnDownLineIdx = idx
         }
     })
     return ans
@@ -144,4 +147,35 @@ function getSelectedLine() {
 
 function getSelectedLineIdx() {
     return gMeme.selectedLineIdx
+}
+
+function setFontType(fontType) {
+    getSelectedLine().fontType = fontType
+}
+
+function saveMeme(canvasURL) {
+    let savedCanvas = loadFromStorage(STORAGE_URL_KEY)
+    if (!savedCanvas) {
+        saveToStorage(STORAGE_URL_KEY, [canvasURL])
+        gMeme.selectedImg = gMeme.selectedImg.src
+        saveToStorage(STORAGE_MEME_KEY, [gMeme])
+    }
+    else {
+        savedCanvas = loadFromStorage(STORAGE_URL_KEY)
+        savedCanvas.push(canvasURL)
+        saveToStorage(STORAGE_URL_KEY, savedCanvas)
+
+        let savedMemes = loadFromStorage(STORAGE_MEME_KEY)
+        gMeme.selectedImg = gMeme.selectedImg.src
+        savedMemes.push(gMeme)
+        saveToStorage(STORAGE_MEME_KEY, savedMemes)
+    }
+}
+
+function setMeme(idx) {
+    if (idx === undefined || idx === null) return
+    const meme = loadFromStorage(STORAGE_MEME_KEY)[idx]
+    gMeme = meme
+    getEl('.temp-img').src = meme.selectedImg
+    gMeme.selectedImg = getEl('.temp-img')
 }

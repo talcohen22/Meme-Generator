@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="css/body-layout.css">
     <link rel="stylesheet" href="css/header-layout.css">
     <link rel="stylesheet" href="css/gallery-layout.css">
+    <link rel="stylesheet" href="css/saved-memes.css">
     <link rel="stylesheet" href="css/meme-layout.css">
     <link rel="stylesheet" href="css/footer-layout.css">
     <title>Meme Generator</title>
@@ -21,8 +22,9 @@
         <nav class="main-nav-container">
             <ul class="main-nav">
                 <li><a class="logo" href="">myMemegen</a></li>
-                <li><a href="">Flexible</a></li>
+                <!-- <li><a href="">Flexible</a></li> -->
                 <li><a href="" onclick="renderGallery();onInitEditor()">Gallery</a></li>
+                <li><a onclick="onGetSavedMemes()">Saved Memes</a></li>
                 <li><a href="">About</a></li>
             </ul>
         </nav>
@@ -35,6 +37,9 @@
             <div class="images-container"> </div>
         </section>
 
+        <section class="saved-memes">
+        </section>
+
         <section class="meme-editor hidden">
             <div class="meme-editor-layout">
                 <canvas class="main-canvas"> </canvas>
@@ -43,24 +48,40 @@
                 <input class="text-input" type="text" placeholder="Write Something funny..." oninput="onAddText(this.value)">
                 <div class="features1">
                     <button onclick="onAddLine()" title="New line"><i class="fa-solid fa-plus"></i></button>
-                    <button onclick="onDeleteLine()"><i class="fa-solid fa-trash-can"></i></button>
-                    <button onclick="onRowUp(false)" title="Get next line"><i class="fa-solid fa-arrow-down"></i></i></button>
+                    <button onclick="onDeleteLine()" title="Delete this line"><i class="fa-solid fa-trash-can"></i></button>
                     <button onclick="onRowUp(true)" title="Get prev line"><i class="fa-solid fa-arrow-up"></i></button>
+                    <button onclick="onRowUp(false)" title="Get next line"><i class="fa-solid fa-arrow-down"></i></i></button>
                 </div>
                 <div class-="features2">
                     <button onclick="onSetFontBigger(true)">A+</button>
                     <button onclick="onSetFontBigger(false)">A-</button>
-                    <input type="color" oninput="onSetTextColor(this.value)" value="#ffffff">
-                    <input type="color" oninput="onSetStrokeColor(this.value)" value="#000000">
+                    <select id="font-selector" onchange="onSetFontType(this)">
+                        <option value="">A</option>
+                        <option value="Comic Sans MS">Comic Sans MS</option>
+                        <option value="Impact">Impact</option>
+                        <option value="Arial">Arial</option>
+                        <option value="Times">Times</option>
+                        <option value="Courier">Courier</option>
+                    </select>
+                </div>
+                <div>
+                    <input class="txt-color" type="color" oninput="onSetTextColor(this.value)" value="#ffffff">
+                    <input class="stroke-color" type="color" oninput="onSetStrokeColor(this.value)" value="#000000">
                 </div>
                 <div class="features3">
+                    <button class="btn" onclick="onSaveMeme()" title="Add to saved memes"><i class="fa-solid fa-check"></i></button>
                     <button title="Download"><a href="#" class="download-btn" onclick="downloadImg(this)" download="my-img.jpg"><i class="fa-solid fa-download"></i></a></button>
                     <button class="btn" onclick="onUploadImg()" title="Share on Facebook"><i class="fa-brands fa-facebook-f"></i></button>
                 </div>
+                
+                
+
             </div>
             
 
         </section>
+
+        <img class="temp-img hidden" src="" height="500" width="500" onclick="renderImg(this)">
 
     </main>
 

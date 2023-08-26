@@ -23,7 +23,18 @@ function addListeners() {
     gElCanvas.addEventListener('touchend', onUp)
 }
 
+function renderSavedMeme(elImg){
+    setMeme(elImg.dataset.i)
+    hideSavedMemes()
+    showEditor()
+    resizeCanvas(elImg)
+    gCtx.drawImage(elImg, 0, 0, gElCanvas.width, gElCanvas.height)
+    // elImg.src = 
+}
+
 function renderImg(elImg) {
+    
+    hideSavedMemes()
     setMemeImg(elImg)
     hideGallery()
     showEditor()
@@ -36,11 +47,16 @@ function renderMeme() {
     const elImg = getMeme().selectedImg
     renderImg(elImg)
     renderExistTexts()
-    addTextLine(selectedLine.txt, selectedLine.fontSize, selectedLine.x, selectedLine.y, selectedLine.color, selectedLine.strokeColor)
+    addTextLine(selectedLine.txt, selectedLine.fontSize, selectedLine.fontType, selectedLine.x, selectedLine.y, selectedLine.color, selectedLine.strokeColor)
 }
 
 function hideGallery() {
     addClass('hidden', '.img-gallery')
+}
+
+function hideSavedMemes(){
+    removeClass('flex', '.saved-memes')
+    addClass('hidden' , '.saved-memes')
 }
 
 function showEditor() {
@@ -48,8 +64,12 @@ function showEditor() {
     removeClass('hidden', '.meme-editor')
 }
 
-function onAddText(txt) {
+function onSetMeme(idx){
+    setMeme(idx)    
+}
 
+function onAddText(txt) {
+    
     gCtx.clearRect(0, 0, gElCanvas.width, gElCanvas.height)
     gCtx.drawImage(getMeme().selectedImg, 0, 0, gElCanvas.width, gElCanvas.height)
 
@@ -57,12 +77,12 @@ function onAddText(txt) {
 
     if (isLineExist()) {
         var currLine = getSelectedLine()
-        addTextLine(txt, currLine.fontSize, currLine.x, currLine.y, currLine.color, currLine.strokeColor)
+        addTextLine(txt, currLine.fontSize, currLine.fontType, currLine.x, currLine.y, currLine.color, currLine.strokeColor)
         setLine(txt, currLine.x, currLine.y)
     }
     else {
         var { x, y } = getTxtLocation()
-        addTextLine(txt, undefined, x, y) //change the text
+        addTextLine(txt, undefined, undefined, x, y) //change the text
         setLine(txt, x, y)
     }
 }
@@ -81,12 +101,12 @@ function getTxtLocation() {
 
 function renderExistTexts() { //render all texts that already enter
     getMeme().lines.forEach((line, idx) => {
-        if (getSelectedLineIdx() !== idx) addTextLine(line.txt, line.fontSize, line.x, line.y, line.color, line.strokeColor)
+        if (getSelectedLineIdx() !== idx) addTextLine(line.txt, line.fontSize, line.fontType, line.x, line.y, line.color, line.strokeColor)
     })
 }
 
-function addTextLine(txt, fontSize = 45, x, y, color = "white", strokeColor = "black") {
-    gCtx.font = fontSize + 'px ' + 'Comic Sans MS';
+function addTextLine(txt, fontSize = 45, fontType = 'Comic Sans MS', x, y, color = "white", strokeColor = "black") {
+    gCtx.font = fontSize + 'px ' + fontType; ///Impact font family
     gCtx.fillStyle = color
     gCtx.textAlign = "center"
     gCtx.strokeStyle = strokeColor
@@ -95,7 +115,7 @@ function addTextLine(txt, fontSize = 45, x, y, color = "white", strokeColor = "b
     gCtx.fillText(txt, x, y)
 }
 
-function resizeCanvas(elImg) {
+function resizeCanvas(elImg) { 
     const elContainer = getEl('.meme-editor-layout')
     gElCanvas.width = elContainer.offsetWidth
     const IH = elImg.height
@@ -109,6 +129,9 @@ function onDown(ev) {
     gCurrLineIdx = getSelectedLineIdx()
 
     if (!isTextClicked(pos)) return
+    setSelectedIdx(gOnDownLineIdx)
+    getEl('.text-input').value = getSelectedLine().txt
+    onSetColorValues()
     setTextDrag(true)
 
     gStartPos = pos
@@ -189,6 +212,7 @@ function onSetFontBigger(isBigger) {
 function onDeleteLine() {
     deleteLine()
     getEl('.text-input').value = getSelectedLine().txt
+    onSetColorValues()
     renderMeme()
 }
 
@@ -196,6 +220,7 @@ function onAddLine() {
     createLine('', 0)
     setSelectedIdx(getMeme().lines.length - 1)
     getEl('.text-input').value = ''
+    onSetColorValues()
 }
 
 function onRowUp(isUp) {
@@ -205,6 +230,14 @@ function onRowUp(isUp) {
     if (!isUp) setSelectedIdx(currLine + 1)
 
     getEl('.text-input').value = getSelectedLine().txt
+    onSetColorValues()
+}
+
+function onSetFontType(ElfontType){
+    if (!ElfontType.value) return
+    setFontType(ElfontType.value)
+    renderMeme()
+    ElfontType.value = ''
 }
 
 function onUploadImg() {
@@ -233,4 +266,30 @@ function doUploadImg(imgDataUrl, onSuccess) {
     }
     XHR.open('POST', '//ca-upload.com/here/upload.php')
     XHR.send(formData)
+}
+
+function onSetColorValues(){
+    getEl('.txt-color').value = getSelectedLine().color + ''
+    getEl('.stroke-color').value = getSelectedLine().strokeColor + ''
+}
+
+function onSaveMeme(){
+    saveMeme(gElCanvas.toDataURL())
+    onGetSavedMemes()
+}
+
+function onGetSavedMemes() {
+    hideGallery()
+    removeClass('flex', '.meme-editor')
+    addClass('hidden', '.meme-editor')
+    addClass('flex', '.saved-memes')
+    removeClass('hidden', '.saved-memes')
+
+    let dataURLs = loadFromStorage(STORAGE_URL_KEY)
+    if(!dataURLs) return
+    
+    getEl('.saved-memes').innerHTML = ''
+    dataURLs.forEach((dataURL, idx) => {
+        getEl('.saved-memes').innerHTML += `<img src="${dataURL}" class="img${idx}" data-i="${idx}" onclick="renderSavedMeme(this)"> </img>`
+    })
 }
