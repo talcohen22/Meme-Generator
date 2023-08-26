@@ -3,15 +3,12 @@
     html{
         font-size: 14px;
     }
-    .img-gallery img {
+    .img-gallery img, .saved-memes img {
         max-width: 150px;
     }
     .meme-editor{
         flex-direction: column;
         gap: 10px;
-    }
-    canvas{
-        /* max-width:250px ; */
     }
 }
 
@@ -20,7 +17,7 @@
     html{
         font-size: 15px;
     }
-    .img-gallery img {
+    .img-gallery img, .saved-memes img {
         max-width: 160px;
     }
     .meme-editor{
