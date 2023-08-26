@@ -62,7 +62,7 @@ function onAddText(txt) {
 
     if (isLineExist()) var { x, y } = { x: currLine.x, y: currLine.y }
     else var { x, y } = getTxtLocation() //up/down/middle
-
+    
     addTextLine(txt, currLine.fontSize, currLine.fontType, x, y, currLine.color, currLine.strokeColor)
     setLine(txt, x, y)
 }
@@ -143,14 +143,16 @@ function onUp() {
 }
 
 function onMove(ev) {
-
     const pos = getEvPos(ev)
     if (isTextClicked(pos) && !gIsDrag) {
         document.body.style.cursor = 'grab'
-        // onSetSquareAround()
+        onSetSquareAround(pos)
     }
     else if (isTextClicked(pos) && gIsDrag) document.body.style.cursor = 'grabbing'
-    else document.body.style.cursor = 'default'
+    else {
+        document.body.style.cursor = 'default'
+        renderMeme()
+    }
     if (!gIsDrag) return
 
     const dx = pos.x - gStartPos.x
@@ -158,15 +160,20 @@ function onMove(ev) {
 
     moveText(dx, dy)
     renderMeme()
+    onSetSquareAround(pos)
     gStartPos = pos
 }
 
-// function onSetSquareAround() {
-//     let line = getSelectedLine()
-//     gCtx.beginPath();
-//     gCtx.rect(line.leftTop.x, line.leftTop.y, line.width, line.fontSize);
-//     gCtx.stroke();
-// }
+function onSetSquareAround(pos) {
+    let line = getLineByPos(pos)
+    if(line !== undefined){
+        gCtx.beginPath();
+        gCtx.lineWidth = "1";
+        gCtx.strokeStyle = "red";
+        gCtx.rect(line.leftTop.x - 5, line.leftTop.y, line.width + 5, line.fontSize + line.fontSize/5);
+        gCtx.stroke();
+    }
+}
 
 function downloadImg(elLink) {
     const imgContent = gElCanvas.toDataURL('image/jpeg') // image/jpeg the default format
@@ -220,68 +227,24 @@ function onSetFontType(ElfontType) {
     ElfontType.value = ''
 }
 
-// function onUploadImg() {
-//     const imgDataUrl = gElCanvas.toDataURL('image/jpeg')
-//     function onSuccess(uploadedImgUrl) {
-//         const url = encodeURIComponent(uploadedImgUrl)
-//         window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&t=${url}`)
-//     }
-//     doUploadImg(imgDataUrl, onSuccess)
-// }
-
-// function doUploadImg(imgDataUrl, onSuccess) {
-//     const formData = new FormData()
-//     formData.append('img', imgDataUrl)
-//     const XHR = new XMLHttpRequest()
-
-//     XHR.onreadystatechange = () => {
-//         if (XHR.readyState !== XMLHttpRequest.DONE) return
-//         if (XHR.status !== 200) return console.error('Error uploading image')
-//         const { responseText: url } = XHR
-//         console.log('Got back live url:', url)
-//         onSuccess(url)
-//     }
-//     XHR.onerror = (req, ev) => {
-//         console.error('Error connecting to server with request:', req, '\nGot response data:', ev)
-//     }
-//     XHR.open('POST', '//ca-upload.com/here/upload.php')
-//     XHR.send(formData)
-// }
-
 function onUploadImg() {
-    // Gets the image from the canvas
-    const imgDataUrl = gElCanvas.toDataURL('image/jpeg') 
-
+    const imgDataUrl = gElCanvas.toDataURL('image/jpeg')
     function onSuccess(uploadedImgUrl) {
-        // Handle some special characters
         const url = encodeURIComponent(uploadedImgUrl)
         window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&t=${url}`)
     }
-    
-    // Send the image to the server
     doUploadImg(imgDataUrl, onSuccess)
 }
 
-// Upload the image to a server, get back a URL 
-// call the function onSuccess when done
 function doUploadImg(imgDataUrl, onSuccess) {
-    // Pack the image for delivery
     const formData = new FormData()
     formData.append('img', imgDataUrl)
 
-    // Send a post req with the image to the server
     const XHR = new XMLHttpRequest()
     XHR.onreadystatechange = () => {
-        // If the request is not done, we have no business here yet, so return
         if (XHR.readyState !== XMLHttpRequest.DONE) return
-        // if the response is not ok, show an error
         if (XHR.status !== 200) return console.error('Error uploading image')
         const { responseText: url } = XHR
-        // Same as
-        // const url = XHR.responseText
-
-        // If the response is ok, call the onSuccess callback function, 
-        // that will create the link to facebook using the url we got
         console.log('Got back live url:', url)
         onSuccess(url)
     }
@@ -291,10 +254,6 @@ function doUploadImg(imgDataUrl, onSuccess) {
     XHR.open('POST', '//ca-upload.com/here/upload.php')
     XHR.send(formData)
 }
-
-
-
-
 
 function onSetColorValues() {
     getEl('.txt-color').value = getSelectedLine().color + ''

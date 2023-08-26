@@ -86,12 +86,13 @@ function setMemeImg(img) {
 
 function setLine(txt, x, y) {
     let line = getSelectedLine()
+    console.log('line.fontSize:', line.fontSize)
     line.txt = txt
     line.x = x
     line.y = y
     line.width = gCtx.measureText(txt).width
     line.leftTop = { x: line.x - line.width / 2, y: line.y - line.fontSize }
-    line.rightBottom = { x: line.x + line.width / 2, y: line.y }
+    line.rightBottom = { x: line.x + line.width / 2, y: line.y + line.fontSize / 5 }
 }
 
 function isTextClicked(pos) {
@@ -103,6 +104,11 @@ function isTextClicked(pos) {
         }
     })
     return ans
+}
+
+function getLineByPos(pos) {
+    return gMeme.lines
+        .find(line => (pos.x <= line.rightBottom.x && pos.x >= line.leftTop.x && pos.y <= line.rightBottom.y && pos.y >= line.leftTop.y))
 }
 
 function moveText(dx, dy) {
@@ -123,6 +129,8 @@ function setStrokeColor(color) {
 
 function setFontBigger(deltaPx) {
     getSelectedLine().fontSize += deltaPx
+    const line = getSelectedLine()
+    setLine(line.txt, line.x, line.y) //////////////////////////////////////
 }
 
 function deleteLine() {

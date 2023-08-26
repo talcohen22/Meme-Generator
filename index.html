@@ -23,10 +23,8 @@
         <nav class="main-nav-container">
             <ul class="main-nav">
                 <li><a class="logo" href="">myMemegen</a></li>
-                <!-- <li><a href="">Flexible</a></li> -->
                 <li><a href="" onclick="renderGallery();onInitEditor()">Gallery</a></li>
                 <li><a onclick="onGetSavedMemes()">Saved Memes</a></li>
-                <!-- <li><a href="">About</a></li> -->
             </ul>
         </nav>
     </header>
@@ -34,7 +32,11 @@
     <main class="main-container">
 
         <section class="img-gallery">
-            <h1>Choose an image</h1>
+            <div class="img-gallery-header">
+                <h1>Choose an image</h1>
+                <label for="files" class="upload-btn">Upload Image</label>
+            </div>
+            <input type="file" class="file-input btn" id="files" name="image" onchange="onImgInput(event)" accept="image/*" style="visibility:hidden;"/>    
             <div class="images-container"> </div>
         </section>
 
@@ -42,9 +44,11 @@
         </section>
 
         <section class="meme-editor hidden">
+
             <div class="meme-editor-layout">
                 <canvas class="main-canvas"> </canvas>
             </div>
+
             <div class="features-container">
                 <input class="text-input" type="text" placeholder="Write Something funny..." oninput="onAddText(this.value)">
                 <div class="features1">
@@ -65,21 +69,17 @@
                         <option value="Courier">Courier</option>
                     </select>
                 </div>
-                <div>
+                <div class="features3">
                     <input class="txt-color" type="color" oninput="onSetTextColor(this.value)" value="#ffffff">
                     <input class="stroke-color" type="color" oninput="onSetStrokeColor(this.value)" value="#000000">
                 </div>
-                <div class="features3">
+                <div class="features4">
                     <button class="btn" onclick="onSaveMeme()" title="Add to saved memes"><i class="fa-solid fa-check"></i></button>
                     <button title="Download"><a href="#" class="download-btn" onclick="downloadImg(this)" download="my-img.jpg"><i class="fa-solid fa-download"></i></a></button>
                     <button class="btn" onclick="onUploadImg()" title="Share on Facebook"><i class="fa-brands fa-facebook-f"></i></button>
                 </div>
-                
-                
-
             </div>
             
-
         </section>
 
         <img class="temp-img hidden" src="" height="500" width="500" onclick="renderImg(this)">
