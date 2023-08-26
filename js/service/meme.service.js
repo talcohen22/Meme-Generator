@@ -7,32 +7,6 @@ let gStorageMemes = []
 let gCountId = 1
 let gOnDownLineIdx
 
-let gImg = [
-    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
-    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
-    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
-    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
-    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
-    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
-    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
-    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
-    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
-    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
-    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
-    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
-    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
-    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
-    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
-    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
-    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
-    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
-    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
-    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
-    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
-    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
-    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
-]
-
 let gMeme = {
     selectedImg: '',
     selectedLineIdx: 0,
@@ -65,10 +39,6 @@ function createLine(x, y) {
     return line
 }
 
-function getImages() {
-    return gImg
-}
-
 function getMeme() {
     return gMeme
 }
@@ -77,16 +47,8 @@ function setMemeImg(img) {
     gMeme.selectedImg = img
 }
 
-// function isTxtExist(txt) {
-//     gMeme.lines.forEach(line => {
-//         if (gMeme.lines[0].txt === txt.substring(0, txt.length - 1)) return true
-//     })
-//     return false
-// }
-
 function setLine(txt, x, y) {
     let line = getSelectedLine()
-    console.log('line.fontSize:', line.fontSize)
     line.txt = txt
     line.x = x
     line.y = y
@@ -130,7 +92,7 @@ function setStrokeColor(color) {
 function setFontBigger(deltaPx) {
     getSelectedLine().fontSize += deltaPx
     const line = getSelectedLine()
-    setLine(line.txt, line.x, line.y) //////////////////////////////////////
+    setLine(line.txt, line.x, line.y) 
 }
 
 function deleteLine() {

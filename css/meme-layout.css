@@ -1,12 +1,6 @@
 .meme-editor{
-    /* display: flex; */
     gap: 30px;
     align-items: center;
-}
-
-.meme-editor-layout{
-    /* width: 600px;
-    height: 600px; */
 }
 
 .features-container{

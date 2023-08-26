@@ -86,7 +86,7 @@ function renderExistTexts() { //render all texts that already enter
 }
 
 function addTextLine(txt, fontSize = 45, fontType = 'Impact', x, y, color = "white", strokeColor = "black") {
-    gCtx.font = fontSize + 'px ' + fontType; ///Impact font family
+    gCtx.font = fontSize + 'px ' + fontType; 
     gCtx.fillStyle = color
     gCtx.textAlign = "center"
     gCtx.strokeStyle = strokeColor
@@ -101,7 +101,7 @@ function resizeCanvas(elImg) {
     const IH = elImg.height
     const IW = elImg.width
     const CW = gElCanvas.width
-    gElCanvas.height = IH * CW / IW //CH 
+    gElCanvas.height = IH * CW / IW // = CH 
 }
 
 function onDown(ev) {

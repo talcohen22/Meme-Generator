@@ -1,5 +1,31 @@
 'use strict'
 
+let gImg = [
+    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
+    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
+    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
+    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
+    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
+    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
+    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
+    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
+    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
+    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
+    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
+    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
+    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
+    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
+    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
+    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
+    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
+    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
+    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
+    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
+    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
+    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
+    { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
+]
+
 function onInitGallery(){
     renderImages()
 }
@@ -11,9 +37,8 @@ function renderGallery(){
 }
 
 function renderImages(){
-    const imgs = getImages()
     let strHtml = ''
-    imgs.forEach(img => strHtml += `<img src=${img.url} onclick="renderImg(this)">`)
+    gImg.forEach(img => strHtml += `<img src=${img.url} onclick="renderImg(this)">`)
     setElHtml('.images-container', strHtml)
 }
 
