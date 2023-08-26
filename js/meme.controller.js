@@ -23,17 +23,15 @@ function addListeners() {
     gElCanvas.addEventListener('touchend', onUp)
 }
 
-function renderSavedMeme(elImg){
+function renderSavedMeme(elImg) {
     setMeme(elImg.dataset.i)
     hideSavedMemes()
     showEditor()
     resizeCanvas(elImg)
     gCtx.drawImage(elImg, 0, 0, gElCanvas.width, gElCanvas.height)
-    // elImg.src = 
 }
 
 function renderImg(elImg) {
-    
     hideSavedMemes()
     setMemeImg(elImg)
     hideGallery()
@@ -50,41 +48,23 @@ function renderMeme() {
     addTextLine(selectedLine.txt, selectedLine.fontSize, selectedLine.fontType, selectedLine.x, selectedLine.y, selectedLine.color, selectedLine.strokeColor)
 }
 
-function hideGallery() {
-    addClass('hidden', '.img-gallery')
-}
-
-function hideSavedMemes(){
-    removeClass('flex', '.saved-memes')
-    addClass('hidden' , '.saved-memes')
-}
-
-function showEditor() {
-    addClass('flex', '.meme-editor')
-    removeClass('hidden', '.meme-editor')
-}
-
-function onSetMeme(idx){
-    setMeme(idx)    
+function onSetMeme(idx) {
+    setMeme(idx)
 }
 
 function onAddText(txt) {
-    
     gCtx.clearRect(0, 0, gElCanvas.width, gElCanvas.height)
     gCtx.drawImage(getMeme().selectedImg, 0, 0, gElCanvas.width, gElCanvas.height)
 
     renderExistTexts()
 
-    if (isLineExist()) {
-        var currLine = getSelectedLine()
-        addTextLine(txt, currLine.fontSize, currLine.fontType, currLine.x, currLine.y, currLine.color, currLine.strokeColor)
-        setLine(txt, currLine.x, currLine.y)
-    }
-    else {
-        var { x, y } = getTxtLocation()
-        addTextLine(txt, undefined, undefined, x, y) //change the text
-        setLine(txt, x, y)
-    }
+    var currLine = getSelectedLine()
+
+    if (isLineExist()) var { x, y } = { x: currLine.x, y: currLine.y }
+    else var { x, y } = getTxtLocation() //up/down/middle
+
+    addTextLine(txt, currLine.fontSize, currLine.fontType, x, y, currLine.color, currLine.strokeColor)
+    setLine(txt, x, y)
 }
 
 function getTxtLocation() {
@@ -115,16 +95,13 @@ function addTextLine(txt, fontSize = 45, fontType = 'Comic Sans MS', x, y, color
     gCtx.fillText(txt, x, y)
 }
 
-function resizeCanvas(elImg) { 
+function resizeCanvas(elImg) {
     const elContainer = getEl('.meme-editor-layout')
     gElCanvas.width = elContainer.offsetWidth
     const IH = elImg.height
     const IW = elImg.width
     const CW = gElCanvas.width
     gElCanvas.height = IH * CW / IW //CH 
-
-    console.log('IH:', IH)
-    console.log('IW:', IW)
 }
 
 function onDown(ev) {
@@ -236,31 +213,75 @@ function onRowUp(isUp) {
     onSetColorValues()
 }
 
-function onSetFontType(ElfontType){
+function onSetFontType(ElfontType) {
     if (!ElfontType.value) return
     setFontType(ElfontType.value)
     renderMeme()
     ElfontType.value = ''
 }
 
+// function onUploadImg() {
+//     const imgDataUrl = gElCanvas.toDataURL('image/jpeg')
+//     function onSuccess(uploadedImgUrl) {
+//         const url = encodeURIComponent(uploadedImgUrl)
+//         window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&t=${url}`)
+//     }
+//     doUploadImg(imgDataUrl, onSuccess)
+// }
+
+// function doUploadImg(imgDataUrl, onSuccess) {
+//     const formData = new FormData()
+//     formData.append('img', imgDataUrl)
+//     const XHR = new XMLHttpRequest()
+
+//     XHR.onreadystatechange = () => {
+//         if (XHR.readyState !== XMLHttpRequest.DONE) return
+//         if (XHR.status !== 200) return console.error('Error uploading image')
+//         const { responseText: url } = XHR
+//         console.log('Got back live url:', url)
+//         onSuccess(url)
+//     }
+//     XHR.onerror = (req, ev) => {
+//         console.error('Error connecting to server with request:', req, '\nGot response data:', ev)
+//     }
+//     XHR.open('POST', '//ca-upload.com/here/upload.php')
+//     XHR.send(formData)
+// }
+
 function onUploadImg() {
-    const imgDataUrl = gElCanvas.toDataURL('image/jpeg')
+    // Gets the image from the canvas
+    const imgDataUrl = gElCanvas.toDataURL('image/jpeg') 
+
     function onSuccess(uploadedImgUrl) {
+        // Handle some special characters
         const url = encodeURIComponent(uploadedImgUrl)
         window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&t=${url}`)
     }
+    
+    // Send the image to the server
     doUploadImg(imgDataUrl, onSuccess)
 }
 
+// Upload the image to a server, get back a URL 
+// call the function onSuccess when done
 function doUploadImg(imgDataUrl, onSuccess) {
+    // Pack the image for delivery
     const formData = new FormData()
     formData.append('img', imgDataUrl)
-    const XHR = new XMLHttpRequest()
 
+    // Send a post req with the image to the server
+    const XHR = new XMLHttpRequest()
     XHR.onreadystatechange = () => {
+        // If the request is not done, we have no business here yet, so return
         if (XHR.readyState !== XMLHttpRequest.DONE) return
+        // if the response is not ok, show an error
         if (XHR.status !== 200) return console.error('Error uploading image')
         const { responseText: url } = XHR
+        // Same as
+        // const url = XHR.responseText
+
+        // If the response is ok, call the onSuccess callback function, 
+        // that will create the link to facebook using the url we got
         console.log('Got back live url:', url)
         onSuccess(url)
     }
@@ -271,28 +292,50 @@ function doUploadImg(imgDataUrl, onSuccess) {
     XHR.send(formData)
 }
 
-function onSetColorValues(){
+
+
+
+
+function onSetColorValues() {
     getEl('.txt-color').value = getSelectedLine().color + ''
     getEl('.stroke-color').value = getSelectedLine().strokeColor + ''
 }
 
-function onSaveMeme(){
+function onSaveMeme() {
     saveMeme(gElCanvas.toDataURL())
     onGetSavedMemes()
 }
 
 function onGetSavedMemes() {
     hideGallery()
-    removeClass('flex', '.meme-editor')
-    addClass('hidden', '.meme-editor')
-    addClass('flex', '.saved-memes')
-    removeClass('hidden', '.saved-memes')
+    hideEditor()
+    showSavedMemes()
 
     let dataURLs = loadFromStorage(STORAGE_URL_KEY)
-    if(!dataURLs) return
-    
+    if (!dataURLs) return
+
     getEl('.saved-memes').innerHTML = ''
     dataURLs.forEach((dataURL, idx) => {
         getEl('.saved-memes').innerHTML += `<img src="${dataURL}" class="img${idx}" data-i="${idx}" onclick="renderSavedMeme(this)"> </img>`
     })
+}
+
+function showSavedMemes() {
+    addClass('flex', '.saved-memes')
+    removeClass('hidden', '.saved-memes')
+}
+
+function hideSavedMemes() {
+    removeClass('flex', '.saved-memes')
+    addClass('hidden', '.saved-memes')
+}
+
+function showEditor() {
+    addClass('flex', '.meme-editor')
+    removeClass('hidden', '.meme-editor')
+}
+
+function hideEditor() {
+    removeClass('flex', '.meme-editor')
+    addClass('hidden', '.meme-editor')
 }

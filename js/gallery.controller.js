@@ -7,8 +7,8 @@ function onInitGallery(){
 }
 
 function renderGallery(){
-    addClass('hidden', '.meme-editor')
-    removeClass('hidden', '.img-gallery')
+    hideEditor()
+    showGallery()
     renderImages()
 }
 
@@ -17,4 +17,12 @@ function renderImages(){
     let strHtml = ''
     imgs.forEach(img => strHtml += `<img src=${img.url} onclick="renderImg(this)">`)
     setElHtml('.images-container', strHtml)
+}
+
+function showGallery(){
+    removeClass('hidden', '.img-gallery')
+}
+
+function hideGallery() {
+    addClass('hidden', '.img-gallery')
 }
