@@ -61,3 +61,7 @@
 .features-container button a{
     color: black;
 }
+
+.features-container .txt-color , .features-container .stroke-color{
+    width: 50px;
+}
