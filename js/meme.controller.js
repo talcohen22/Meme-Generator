@@ -122,6 +122,9 @@ function resizeCanvas(elImg) {
     const IW = elImg.width
     const CW = gElCanvas.width
     gElCanvas.height = IH * CW / IW //CH 
+
+    console.log('IH:', IH)
+    console.log('IW:', IW)
 }
 
 function onDown(ev) {

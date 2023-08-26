@@ -11,6 +11,7 @@
     justify-content: center;
     background-color: rgb(245, 244, 239);
     box-shadow: inset 0px 0px 6px 5px rgb(255 255 255);
+    padding-block: 20px;
 }
 
 .flex{
