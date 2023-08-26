@@ -13,11 +13,11 @@
     margin: 0;
 }
 
-.footer-container :first-child{
+.footer-container :first-child {
     margin-bottom: 20px;
 }
 
-.footer-container ul{
+.footer-container ul {
     display: flex;
     gap: 10px;
     margin-top: 20px;
@@ -25,12 +25,16 @@
     padding: 0;
 }
 
-.footer-container li{
+.footer-container li {
     list-style-type: none;
     cursor: pointer;
 }
 
-.footer-logo{
+.footer-logo {
     font-family: 'eurof';
-    font-size:37px;
+    font-size: 2.3125rem;
+}
+
+small {
+    font-size: 0.8125rem;
 }
