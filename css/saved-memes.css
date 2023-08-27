@@ -4,3 +4,32 @@
     gap: 5px;
     padding-block: 20px;
 }
+
+.save-meme-container{
+    position: relative;
+    /* width: 180px;
+    height: 180px; */
+    /* object-fit: cover; */
+}
+
+.save-meme-container img{
+    
+}
+
+
+
+
+.save-meme-container .delete-img-btn{
+    position: absolute;
+    right: 0;
+    background-color: white;
+    border-radius: 10px;
+    height: 30px;
+    width: 30px;
+    border-width: 0;
+    transition: all 0.6s;
+}
+
+.save-meme-container .delete-img-btn:hover{
+    background-color: rgba(255,192,0,1);
+}

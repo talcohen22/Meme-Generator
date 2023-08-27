@@ -23,6 +23,10 @@ function addListeners() {
     gElCanvas.addEventListener('touchend', onUp)
 }
 
+// function getImgEl(id){
+//     return `<img src=assets/imgs/${id}.jpeg alt=""/>`
+// }
+
 function renderImg(elImg) {
     hideSavedMemes()
     setMemeImg(elImg)
@@ -95,6 +99,8 @@ function addTextLine(txt, fontSize = 45, fontType = 'Impact', x, y, color = "whi
 
 function resizeCanvas(elImg) {
     const elContainer = getEl('.meme-editor-layout')
+    // console.log('elContainer.offsetWidth:', elContainer.style.width)
+    // elContainer.style.width = '300px'
     console.log('elContainer.offsetWidth:', elContainer.offsetWidth)
     gElCanvas.width = elContainer.offsetWidth
     const IH = elImg.height
@@ -285,11 +291,20 @@ function onGetSavedMemes() {
 
     let dataURLs = loadFromStorage(STORAGE_URL_KEY)
     if (!dataURLs) return
-
+    
     getEl('.saved-memes').innerHTML = ''
     dataURLs.forEach((dataURL, idx) => {
-        getEl('.saved-memes').innerHTML += `<img src="${dataURL}" class="img${idx}" data-i="${idx}" onclick="renderSavedMeme(this)"> </img>`
+        getEl('.saved-memes').innerHTML += 
+        `<div class="save-meme-container">
+            <img src="${dataURL}" class="img${idx}" data-i="${idx}" onclick="renderSavedMeme(this)"> </img>
+            <button class="delete-img-btn" onclick="onDeleteSaveMeme(${idx})"><i class="fa-solid fa-trash-can"></i></button>
+        </div>`
     })
+}
+
+function onDeleteSaveMeme(idx){
+    deleteSaveMeme(idx)
+    onGetSavedMemes()
 }
 
 function onSetColorValues() {

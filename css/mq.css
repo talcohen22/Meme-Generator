@@ -4,7 +4,8 @@
         font-size: 14px;
     }
     .img-gallery img, .saved-memes img {
-        max-width: 150px;
+        width: 150px;
+        height: 150px;
     }
     .meme-editor{
         flex-direction: column;
@@ -18,7 +19,8 @@
         font-size: 15px;
     }
     .img-gallery img, .saved-memes img {
-        max-width: 160px;
+        width: 160px;
+        height: 160px;
     }
     .meme-editor{
         gap: 10px;

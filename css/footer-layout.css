@@ -29,6 +29,10 @@
     color: black;
 }
 
+.footer-container a:hover{
+    color: white;
+}
+
 .footer-container li {
     list-style-type: none;
     cursor: pointer;

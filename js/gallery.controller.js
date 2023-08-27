@@ -38,7 +38,7 @@ function renderGallery(){
 
 function renderImages(){
     let strHtml = ''
-    gImg.forEach(img => strHtml += `<img src=${img.url} onclick="renderImg(this)">`)
+    gImg.forEach((img,idx) => strHtml += `<img src=${img.url} onclick="renderImg(this)">`)
     setElHtml('.images-container', strHtml)
 }
 

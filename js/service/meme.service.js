@@ -149,3 +149,12 @@ function setMeme(idx) {
     const meme = loadFromStorage(STORAGE_MEME_KEY)[idx]
     gMeme = meme
 }
+
+function deleteSaveMeme(idx){
+    let urls = loadFromStorage(STORAGE_URL_KEY)
+    let memes = loadFromStorage(STORAGE_MEME_KEY)
+    urls.splice(idx,1)
+    memes.splice(idx,1)
+    saveToStorage(STORAGE_URL_KEY, urls)
+    saveToStorage(STORAGE_MEME_KEY, memes)
+}

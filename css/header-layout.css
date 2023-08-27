@@ -28,7 +28,8 @@
     cursor: pointer;
 }
 
-.header-container li:not(:first-child):hover{
+.header-container li:not(:first-child):hover a{
+    color: white;
     font-weight: bold;
 }
 
