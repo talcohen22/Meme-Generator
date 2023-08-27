@@ -116,6 +116,7 @@ function onDown(ev) {
 
     gStartPos = pos
     document.body.style.cursor = 'grabbing'
+    getEl('.text-input').value = getSelectedLine().txt
 }
 
 function resetInputs() {
@@ -147,6 +148,7 @@ function onUp() {
     document.body.style.cursor = 'grab'
     gCurrLineIdx = getSelectedLineIdx()
     renderMeme()
+    getEl('.text-input').value = getSelectedLine().txt
 }
 
 function onMove(ev) {
