@@ -23,13 +23,9 @@ function addListeners() {
     gElCanvas.addEventListener('touchend', onUp)
 }
 
-// function getImgEl(id){
-//     return `<img src=assets/imgs/${id}.jpeg alt=""/>`
-// }
-
 function renderImg(elImg) {
     hideSavedMemes()
-    setMemeImg(elImg)
+    setMemeImg(elImg.src , elImg.dataset.id)
     hideGallery()
     showEditor()
     resizeCanvas(elImg)
@@ -38,7 +34,7 @@ function renderImg(elImg) {
 
 function renderMeme() {
     const selectedLine = getSelectedLine()
-    const elImg = getMeme().selectedImg
+    const elImg = getImgEl()
     renderImg(elImg)
     renderExistTexts()
     addTextLine(selectedLine.txt, selectedLine.fontSize, selectedLine.fontType, selectedLine.x, selectedLine.y, selectedLine.color, selectedLine.strokeColor)
@@ -47,7 +43,6 @@ function renderMeme() {
 function renderSavedMeme(elImg) {
     resetInputs()
     setMeme(elImg.dataset.i)
-    updateImgSrc()
     hideSavedMemes()
     showEditor()
     resizeCanvas(elImg)
@@ -56,7 +51,7 @@ function renderSavedMeme(elImg) {
 
 function onAddText(txt) {
     gCtx.clearRect(0, 0, gElCanvas.width, gElCanvas.height)
-    gCtx.drawImage(getMeme().selectedImg, 0, 0, gElCanvas.width, gElCanvas.height)
+    gCtx.drawImage(getImgEl(), 0, 0, gElCanvas.width, gElCanvas.height)
 
     renderExistTexts()
 
@@ -99,26 +94,15 @@ function addTextLine(txt, fontSize = 45, fontType = 'Impact', x, y, color = "whi
 
 function resizeCanvas(elImg) {
     const elContainer = getEl('.meme-editor-layout')
-    // console.log('elContainer.offsetWidth:', elContainer.style.width)
-    // elContainer.style.width = '300px'
-    console.log('elContainer.offsetWidth:', elContainer.offsetWidth)
     gElCanvas.width = elContainer.offsetWidth
     const IH = elImg.height
     const IW = elImg.width
     const CW = gElCanvas.width
-    console.log('IW:', IW)
-    console.log('IH:', IH)
     gElCanvas.height = IH * CW / IW // = CH 
 }
 
 function onSetMeme(idx) {
     setMeme(idx)
-    updateImgSrc()
-}
-
-function updateImgSrc(){
-    getEl('.temp-img').src = getMeme().selectedImg
-    getMeme().selectedImg = getEl('.temp-img')
 }
 
 function onDown(ev) {
@@ -279,7 +263,7 @@ function doUploadImg(imgDataUrl, onSuccess) {
 }
 
 function onSaveMeme() {
-    saveMeme(gElCanvas.toDataURL())
+    saveMeme(getEl('canvas').toDataURL())
     onGetSavedMemes()
     getEl('.text-input').value = ''
 }
@@ -289,14 +273,15 @@ function onGetSavedMemes() {
     hideEditor()
     showSavedMemes()
 
+    let savedMemes = loadFromStorage(STORAGE_SAVED_MEMES)
     let dataURLs = loadFromStorage(STORAGE_URL_KEY)
-    if (!dataURLs) return
+    if (!savedMemes) return
     
     getEl('.saved-memes').innerHTML = ''
-    dataURLs.forEach((dataURL, idx) => {
+    savedMemes.forEach((savedMemes, idx) => {
         getEl('.saved-memes').innerHTML += 
         `<div class="save-meme-container">
-            <img src="${dataURL}" class="img${idx}" data-i="${idx}" onclick="renderSavedMeme(this)"> </img>
+            <img src="${dataURLs[idx]}" data-img-src="${getImgElById(savedMemes.imgId).src}" class="img${idx}" data-i="${idx}" onclick="renderSavedMeme(this)"> </img>
             <button class="delete-img-btn" onclick="onDeleteSaveMeme(${idx})"><i class="fa-solid fa-trash-can"></i></button>
         </div>`
     })
@@ -305,6 +290,15 @@ function onGetSavedMemes() {
 function onDeleteSaveMeme(idx){
     deleteSaveMeme(idx)
     onGetSavedMemes()
+}
+
+function getImgElById(id){
+    return document.querySelector(`[data-id="${id}"]`)
+}
+
+function getImgEl(){
+    const imdId = getMemeImgId() + ''
+    return document.querySelector(`[data-id="${imdId}"]`)
 }
 
 function onSetColorValues() {

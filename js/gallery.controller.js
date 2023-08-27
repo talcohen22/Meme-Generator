@@ -26,23 +26,23 @@ let gImg = [
     { id: gCountId, url: `'img/${gCountId++}.jpg'`, keywords: [] },
 ]
 
-function onInitGallery(){
+function onInitGallery() {
     renderImages()
 }
 
-function renderGallery(){
+function renderGallery() {
     hideEditor()
     showGallery()
     renderImages()
 }
 
-function renderImages(){
+function renderImages() {
     let strHtml = ''
-    gImg.forEach((img,idx) => strHtml += `<img src=${img.url} onclick="renderImg(this)">`)
+    gImg.forEach((img, idx) => strHtml += `<img src=${img.url} data-id=${idx + 1} onclick="renderImg(this)">`)
     setElHtml('.images-container', strHtml)
 }
 
-function showGallery(){
+function showGallery() {
     removeClass('hidden', '.img-gallery')
 }
 
@@ -58,9 +58,9 @@ function loadImageFromInput(ev, onImageReady) {
     const reader = new FileReader()
 
     reader.onload = function (event) {
-        let img = new Image() 
-        img.src = event.target.result 
+        let img = new Image()
+        img.src = event.target.result
         img.onload = () => onImageReady(img)
     }
-    reader.readAsDataURL(ev.target.files[0]) 
+    reader.readAsDataURL(ev.target.files[0])
 }
