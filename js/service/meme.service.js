@@ -124,6 +124,8 @@ function setFontType(fontType) {
 }
 
 function saveMeme(canvasURL) {
+    createLine() 
+    gMeme.selectedLineIdx += 1 
     let savedCanvas = loadFromStorage(STORAGE_URL_KEY)
     if (!savedCanvas) {
         saveToStorage(STORAGE_URL_KEY, [canvasURL])
@@ -146,6 +148,4 @@ function setMeme(idx) {
     if (idx === undefined || idx === null) return
     const meme = loadFromStorage(STORAGE_MEME_KEY)[idx]
     gMeme = meme
-    getEl('.temp-img').src = meme.selectedImg
-    gMeme.selectedImg = getEl('.temp-img')
 }

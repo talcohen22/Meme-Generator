@@ -19,10 +19,14 @@
 
 .footer-container ul {
     display: flex;
-    gap: 10px;
+    gap: 13px;
     margin-top: 20px;
     height: 16px;
     padding: 0;
+}
+
+.footer-container a{
+    color: black;
 }
 
 .footer-container li {

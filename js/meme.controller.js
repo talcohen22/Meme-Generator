@@ -23,14 +23,6 @@ function addListeners() {
     gElCanvas.addEventListener('touchend', onUp)
 }
 
-function renderSavedMeme(elImg) {
-    setMeme(elImg.dataset.i)
-    hideSavedMemes()
-    showEditor()
-    resizeCanvas(elImg)
-    gCtx.drawImage(elImg, 0, 0, gElCanvas.width, gElCanvas.height)
-}
-
 function renderImg(elImg) {
     hideSavedMemes()
     setMemeImg(elImg)
@@ -48,8 +40,14 @@ function renderMeme() {
     addTextLine(selectedLine.txt, selectedLine.fontSize, selectedLine.fontType, selectedLine.x, selectedLine.y, selectedLine.color, selectedLine.strokeColor)
 }
 
-function onSetMeme(idx) {
-    setMeme(idx)
+function renderSavedMeme(elImg) {
+    resetInputs()
+    setMeme(elImg.dataset.i)
+    updateImgSrc()
+    hideSavedMemes()
+    showEditor()
+    resizeCanvas(elImg)
+    gCtx.drawImage(elImg, 0, 0, gElCanvas.width, gElCanvas.height)
 }
 
 function onAddText(txt) {
@@ -97,11 +95,24 @@ function addTextLine(txt, fontSize = 45, fontType = 'Impact', x, y, color = "whi
 
 function resizeCanvas(elImg) {
     const elContainer = getEl('.meme-editor-layout')
+    console.log('elContainer.offsetWidth:', elContainer.offsetWidth)
     gElCanvas.width = elContainer.offsetWidth
     const IH = elImg.height
     const IW = elImg.width
     const CW = gElCanvas.width
+    console.log('IW:', IW)
+    console.log('IH:', IH)
     gElCanvas.height = IH * CW / IW // = CH 
+}
+
+function onSetMeme(idx) {
+    setMeme(idx)
+    updateImgSrc()
+}
+
+function updateImgSrc(){
+    getEl('.temp-img').src = getMeme().selectedImg
+    getMeme().selectedImg = getEl('.temp-img')
 }
 
 function onDown(ev) {
@@ -110,12 +121,17 @@ function onDown(ev) {
 
     if (!isTextClicked(pos)) return
     setSelectedIdx(gOnDownLineIdx)
-    getEl('.text-input').value = getSelectedLine().txt
     onSetColorValues()
     setTextDrag(true)
 
     gStartPos = pos
     document.body.style.cursor = 'grabbing'
+}
+
+function resetInputs(){
+    getEl('.text-input').value = getSelectedLine().txt
+    getEl('.txt-color').value = getSelectedLine().color
+    getEl('.stroke-color').value = getSelectedLine().strokeColor
 }
 
 function getEvPos(ev) {
@@ -256,14 +272,10 @@ function doUploadImg(imgDataUrl, onSuccess) {
     XHR.send(formData)
 }
 
-function onSetColorValues() {
-    getEl('.txt-color').value = getSelectedLine().color + ''
-    getEl('.stroke-color').value = getSelectedLine().strokeColor + ''
-}
-
 function onSaveMeme() {
     saveMeme(gElCanvas.toDataURL())
     onGetSavedMemes()
+    getEl('.text-input').value = ''
 }
 
 function onGetSavedMemes() {
@@ -278,6 +290,11 @@ function onGetSavedMemes() {
     dataURLs.forEach((dataURL, idx) => {
         getEl('.saved-memes').innerHTML += `<img src="${dataURL}" class="img${idx}" data-i="${idx}" onclick="renderSavedMeme(this)"> </img>`
     })
+}
+
+function onSetColorValues() {
+    getEl('.txt-color').value = getSelectedLine().color + ''
+    getEl('.stroke-color').value = getSelectedLine().strokeColor + ''
 }
 
 function showSavedMemes() {
