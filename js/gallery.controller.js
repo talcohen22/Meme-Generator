@@ -61,6 +61,8 @@ function loadImageFromInput(ev, onImageReady) {
         let img = new Image()
         img.src = event.target.result
         img.onload = () => onImageReady(img)
+        img.dataset.id = gCountId++
+        document.querySelector('.img-gallery').appendChild(img)/////////////////////
     }
     reader.readAsDataURL(ev.target.files[0])
 }

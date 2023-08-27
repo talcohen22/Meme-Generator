@@ -49,7 +49,7 @@ function getMeme() {
     return gMeme
 }
 
-function setMemeImg(src, id) {
+function setMemeImg(src, id = -1) {
     gMeme.selectedImg = src
     gMeme.imgId = id + ''
 }

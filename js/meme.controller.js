@@ -25,7 +25,7 @@ function addListeners() {
 
 function renderImg(elImg) {
     hideSavedMemes()
-    setMemeImg(elImg.src , elImg.dataset.id)
+    setMemeImg(elImg.src, elImg.dataset.id)
     hideGallery()
     showEditor()
     resizeCanvas(elImg)
@@ -59,7 +59,7 @@ function onAddText(txt) {
 
     if (isLineExist()) var { x, y } = { x: currLine.x, y: currLine.y }
     else var { x, y } = getTxtLocation() //up/down/middle
-    
+
     addTextLine(txt, currLine.fontSize, currLine.fontType, x, y, currLine.color, currLine.strokeColor)
     setLine(txt, x, y)
 }
@@ -83,7 +83,7 @@ function renderExistTexts() { //render all texts that already enter
 }
 
 function addTextLine(txt, fontSize = 45, fontType = 'Impact', x, y, color = "white", strokeColor = "black") {
-    gCtx.font = fontSize + 'px ' + fontType; 
+    gCtx.font = fontSize + 'px ' + fontType;
     gCtx.fillStyle = color
     gCtx.textAlign = "center"
     gCtx.strokeStyle = strokeColor
@@ -118,7 +118,7 @@ function onDown(ev) {
     document.body.style.cursor = 'grabbing'
 }
 
-function resetInputs(){
+function resetInputs() {
     getEl('.text-input').value = getSelectedLine().txt
     getEl('.txt-color').value = getSelectedLine().color
     getEl('.stroke-color').value = getSelectedLine().strokeColor
@@ -173,11 +173,11 @@ function onMove(ev) {
 
 function onSetSquareAround(pos) {
     let line = getLineByPos(pos)
-    if(line !== undefined){
+    if (line !== undefined) {
         gCtx.beginPath();
         gCtx.lineWidth = "1";
         gCtx.strokeStyle = "red";
-        gCtx.rect(line.leftTop.x - 5, line.leftTop.y, line.width + 5, line.fontSize + line.fontSize/5);
+        gCtx.rect(line.leftTop.x - 5, line.leftTop.y, line.width + 5, line.fontSize + line.fontSize / 5);
         gCtx.stroke();
     }
 }
@@ -276,27 +276,27 @@ function onGetSavedMemes() {
     let savedMemes = loadFromStorage(STORAGE_SAVED_MEMES)
     let dataURLs = loadFromStorage(STORAGE_URL_KEY)
     if (!savedMemes) return
-    
+
     getEl('.saved-memes').innerHTML = ''
-    savedMemes.forEach((savedMemes, idx) => {
-        getEl('.saved-memes').innerHTML += 
-        `<div class="save-meme-container">
-            <img src="${dataURLs[idx]}" data-img-src="${getImgElById(savedMemes.imgId).src}" class="img${idx}" data-i="${idx}" onclick="renderSavedMeme(this)"> </img>
+    savedMemes.forEach((savedMeme, idx) => {
+        getEl('.saved-memes').innerHTML +=
+            `<div class="save-meme-container">
+            <img src="${dataURLs[idx]}" data-img-src="${getImgElById(savedMeme.imgId).src}" class="img${idx}" data-i="${idx}" onclick="renderSavedMeme(this)"> </img>
             <button class="delete-img-btn" onclick="onDeleteSaveMeme(${idx})"><i class="fa-solid fa-trash-can"></i></button>
         </div>`
     })
 }
 
-function onDeleteSaveMeme(idx){
+function onDeleteSaveMeme(idx) {
     deleteSaveMeme(idx)
     onGetSavedMemes()
 }
 
-function getImgElById(id){
+function getImgElById(id) {
     return document.querySelector(`[data-id="${id}"]`)
 }
 
-function getImgEl(){
+function getImgEl() {
     const imdId = getMemeImgId() + ''
     return document.querySelector(`[data-id="${imdId}"]`)
 }

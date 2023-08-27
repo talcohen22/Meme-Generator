@@ -29,6 +29,8 @@ function getRandomIntInclusive(min, max) {
 }
 
 function saveToStorage(key, val) {
+    console.log('key:', key)
+    console.log('val:', val)
     localStorage.setItem(key, JSON.stringify(val))
 }
 
