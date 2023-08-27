@@ -23,9 +23,13 @@ function addListeners() {
     gElCanvas.addEventListener('touchend', onUp)
 }
 
+// function getImgEl(id){
+//     return `<img src=assets/imgs/${id}.jpeg alt=""/>`
+// }
+
 function renderImg(elImg) {
     hideSavedMemes()
-    setMemeImg(elImg.src, elImg.dataset.id)
+    setMemeImg(elImg)
     hideGallery()
     showEditor()
     resizeCanvas(elImg)
@@ -34,7 +38,7 @@ function renderImg(elImg) {
 
 function renderMeme() {
     const selectedLine = getSelectedLine()
-    const elImg = getImgEl()
+    const elImg = getMeme().selectedImg
     renderImg(elImg)
     renderExistTexts()
     addTextLine(selectedLine.txt, selectedLine.fontSize, selectedLine.fontType, selectedLine.x, selectedLine.y, selectedLine.color, selectedLine.strokeColor)
@@ -43,6 +47,7 @@ function renderMeme() {
 function renderSavedMeme(elImg) {
     resetInputs()
     setMeme(elImg.dataset.i)
+    updateImgSrc()
     hideSavedMemes()
     showEditor()
     resizeCanvas(elImg)
@@ -51,7 +56,7 @@ function renderSavedMeme(elImg) {
 
 function onAddText(txt) {
     gCtx.clearRect(0, 0, gElCanvas.width, gElCanvas.height)
-    gCtx.drawImage(getImgEl(), 0, 0, gElCanvas.width, gElCanvas.height)
+    gCtx.drawImage(getMeme().selectedImg, 0, 0, gElCanvas.width, gElCanvas.height)
 
     renderExistTexts()
 
@@ -59,7 +64,7 @@ function onAddText(txt) {
 
     if (isLineExist()) var { x, y } = { x: currLine.x, y: currLine.y }
     else var { x, y } = getTxtLocation() //up/down/middle
-
+    
     addTextLine(txt, currLine.fontSize, currLine.fontType, x, y, currLine.color, currLine.strokeColor)
     setLine(txt, x, y)
 }
@@ -83,7 +88,7 @@ function renderExistTexts() { //render all texts that already enter
 }
 
 function addTextLine(txt, fontSize = 45, fontType = 'Impact', x, y, color = "white", strokeColor = "black") {
-    gCtx.font = fontSize + 'px ' + fontType;
+    gCtx.font = fontSize + 'px ' + fontType; 
     gCtx.fillStyle = color
     gCtx.textAlign = "center"
     gCtx.strokeStyle = strokeColor
@@ -103,6 +108,12 @@ function resizeCanvas(elImg) {
 
 function onSetMeme(idx) {
     setMeme(idx)
+    updateImgSrc()
+}
+
+function updateImgSrc(){
+    getEl('.temp-img').src = getMeme().selectedImg
+    getMeme().selectedImg = getEl('.temp-img')
 }
 
 function onDown(ev) {
@@ -119,7 +130,7 @@ function onDown(ev) {
     getEl('.text-input').value = getSelectedLine().txt
 }
 
-function resetInputs() {
+function resetInputs(){
     getEl('.text-input').value = getSelectedLine().txt
     getEl('.txt-color').value = getSelectedLine().color
     getEl('.stroke-color').value = getSelectedLine().strokeColor
@@ -175,11 +186,11 @@ function onMove(ev) {
 
 function onSetSquareAround(pos) {
     let line = getLineByPos(pos)
-    if (line !== undefined) {
+    if(line !== undefined){
         gCtx.beginPath();
         gCtx.lineWidth = "1";
         gCtx.strokeStyle = "red";
-        gCtx.rect(line.leftTop.x - 5, line.leftTop.y, line.width + 5, line.fontSize + line.fontSize / 5);
+        gCtx.rect(line.leftTop.x - 5, line.leftTop.y, line.width + 5, line.fontSize + line.fontSize/5);
         gCtx.stroke();
     }
 }
@@ -265,7 +276,7 @@ function doUploadImg(imgDataUrl, onSuccess) {
 }
 
 function onSaveMeme() {
-    saveMeme(getEl('canvas').toDataURL())
+    saveMeme(gElCanvas.toDataURL())
     onGetSavedMemes()
     getEl('.text-input').value = ''
 }
@@ -275,32 +286,22 @@ function onGetSavedMemes() {
     hideEditor()
     showSavedMemes()
 
-    let savedMemes = loadFromStorage(STORAGE_SAVED_MEMES)
     let dataURLs = loadFromStorage(STORAGE_URL_KEY)
-    if (!savedMemes) return
-
+    if (!dataURLs) return
+    
     getEl('.saved-memes').innerHTML = ''
-    savedMemes.forEach((savedMeme, idx) => {
-        getEl('.saved-memes').innerHTML +=
-            `<div class="save-meme-container">
-            <img src="${dataURLs[idx]}" data-img-src="${getImgElById(savedMeme.imgId).src}" class="img${idx}" data-i="${idx}" onclick="renderSavedMeme(this)"> </img>
+    dataURLs.forEach((dataURL, idx) => {
+        getEl('.saved-memes').innerHTML += 
+        `<div class="save-meme-container">
+            <img src="${dataURL}" class="img${idx}" data-i="${idx}" onclick="renderSavedMeme(this)"> </img>
             <button class="delete-img-btn" onclick="onDeleteSaveMeme(${idx})"><i class="fa-solid fa-trash-can"></i></button>
         </div>`
     })
 }
 
-function onDeleteSaveMeme(idx) {
+function onDeleteSaveMeme(idx){
     deleteSaveMeme(idx)
     onGetSavedMemes()
-}
-
-function getImgElById(id) {
-    return document.querySelector(`[data-id="${id}"]`)
-}
-
-function getImgEl() {
-    const imdId = getMemeImgId() + ''
-    return document.querySelector(`[data-id="${imdId}"]`)
 }
 
 function onSetColorValues() {

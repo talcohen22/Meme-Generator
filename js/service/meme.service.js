@@ -2,14 +2,12 @@
 
 const STORAGE_URL_KEY = 'urlDB'
 const STORAGE_MEME_KEY = 'memesDB'
-const STORAGE_SAVED_MEMES = 'memesDB'
 
 let gStorageMemes = []
 let gCountId = 1
 let gOnDownLineIdx
 
 let gMeme = {
-    imgId: '',
     selectedImg: '',
     selectedLineIdx: 0,
     lines: []
@@ -21,10 +19,6 @@ _createLines()
 
 function _createLines() {
     gMeme.lines = [createLine('', 0)]
-}
-
-function getMemeImgId() {
-    return gMeme.imgId
 }
 
 function createLine(x, y) {
@@ -49,9 +43,8 @@ function getMeme() {
     return gMeme
 }
 
-function setMemeImg(src, id = -1) {
-    gMeme.selectedImg = src
-    gMeme.imgId = id + ''
+function setMemeImg(img) {
+    gMeme.selectedImg = img
 }
 
 function setLine(txt, x, y) {
@@ -99,7 +92,7 @@ function setStrokeColor(color) {
 function setFontBigger(deltaPx) {
     getSelectedLine().fontSize += deltaPx
     const line = getSelectedLine()
-    setLine(line.txt, line.x, line.y)
+    setLine(line.txt, line.x, line.y) 
 }
 
 function deleteLine() {
@@ -131,25 +124,23 @@ function setFontType(fontType) {
 }
 
 function saveMeme(canvasURL) {
-    createLine()
-    gMeme.selectedLineIdx += 1
-    STORAGE_SAVED_MEMES
-
-    let savedMemes = loadFromStorage(STORAGE_SAVED_MEMES)
-    let canvasURLs = loadFromStorage(STORAGE_URL_KEY)
-
-    if (!savedMemes){
-        saveToStorage(STORAGE_SAVED_MEMES, [gMeme])
+    createLine() 
+    gMeme.selectedLineIdx += 1 
+    let savedCanvas = loadFromStorage(STORAGE_URL_KEY)
+    if (!savedCanvas) {
         saveToStorage(STORAGE_URL_KEY, [canvasURL])
-    } 
+        gMeme.selectedImg = gMeme.selectedImg.src
+        saveToStorage(STORAGE_MEME_KEY, [gMeme])
+    }
     else {
-        savedMemes = loadFromStorage(STORAGE_SAVED_MEMES)
-        savedMemes.push(gMeme)
-        saveToStorage(STORAGE_SAVED_MEMES, savedMemes)
+        savedCanvas = loadFromStorage(STORAGE_URL_KEY)
+        savedCanvas.push(canvasURL)
+        saveToStorage(STORAGE_URL_KEY, savedCanvas)
 
-        canvasURLs = loadFromStorage(STORAGE_URL_KEY)
-        canvasURLs.push(canvasURL)
-        saveToStorage(STORAGE_URL_KEY, canvasURLs)
+        let savedMemes = loadFromStorage(STORAGE_MEME_KEY)
+        gMeme.selectedImg = gMeme.selectedImg.src
+        savedMemes.push(gMeme)
+        saveToStorage(STORAGE_MEME_KEY, savedMemes)
     }
 }
 
@@ -159,11 +150,11 @@ function setMeme(idx) {
     gMeme = meme
 }
 
-function deleteSaveMeme(idx) {
+function deleteSaveMeme(idx){
     let urls = loadFromStorage(STORAGE_URL_KEY)
     let memes = loadFromStorage(STORAGE_MEME_KEY)
-    urls.splice(idx, 1)
-    memes.splice(idx, 1)
+    urls.splice(idx,1)
+    memes.splice(idx,1)
     saveToStorage(STORAGE_URL_KEY, urls)
     saveToStorage(STORAGE_MEME_KEY, memes)
 }
